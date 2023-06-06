@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/created-by: application-service
+    app.kubernetes.io/instance: turbine
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: turbine
+    app.kubernetes.io/part-of: turbine
+  name: turbine
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: turbine
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: turbine
+    spec:
+      containers:
+      - image: quay.io/jduimovich0/quinoa-wind-turbine:2023-03-20-164726
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        name: quinoa-wind-turbine-image
+        ports:
+        - containerPort: 8081
+        resources:
+          limits:
+            cpu: 100m
+            memory: 1Gi
+          requests:
+            cpu: 10m
+            memory: 100Mi
+status: {}
